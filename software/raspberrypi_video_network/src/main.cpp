@@ -7,7 +7,6 @@
 #include <cstring>
 #include <arpa/inet.h>
 
-#include "Palettes.h"
 #include "SPI.h"
 #include "Lepton_I2C.h"
 
