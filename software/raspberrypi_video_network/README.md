@@ -5,12 +5,11 @@ First enable the SPI and I2C interfaces on the Pi.
 sudo raspi-config
 ```
 
-To build, cd to the *LeptonModule/sofware/build* folder, then run:
+To build, cd to the *LeptonModule/sofware* folder, then run:
 ```
+mkdir build
+cd build
 cmake ..
-```
-then run:
-```
 make
 ```
 
@@ -18,7 +17,7 @@ make
 
 To run the program while still in the build directory, using a FLIR Lepton 3.x camera core use the following code:
 ```
-./raspberrypi_video
+./raspberrypi_video_network
 ```
 
 ----
