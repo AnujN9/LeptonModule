@@ -9,17 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(${CMAKE_SOURCE_DIR}/raspberrypi_video_network/include)
 include_directories(${CMAKE_SOURCE_DIR}/raspberrypi_libs/leptonSDKEmb32PUB)
 
-# Source files
-# file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp") #TODO: Remove
-
 # Define the executable
-add_executable(raspberrypi_video raspberrypi_video_network/src/main.cpp)
+add_executable(raspberrypi_video_network raspberrypi_video_network/src/main.cpp raspberrypi_video_network/src/SPI.cpp raspberrypi_video_network/src/Lepton_I2C.cpp)
 
 # Ensure the library path is correct
 link_directories(${CMAKE_SOURCE_DIR}/raspberrypi_libs/leptonSDKEmb32PUB/Debug)
-
-# Link the libraries
-target_link_libraries(raspberrypi_video LEPTON_SDK pthread)
 
 # Custom commands to make sure the SDK is up to date
 add_custom_target(sdk
@@ -33,10 +27,19 @@ add_custom_target(sdkclean
 )
 
 # Ensure the SDK is built before the main project
-add_dependencies(raspberrypi_video sdk)
+add_dependencies(raspberrypi_video_network sdk)
+
+# Add the SDK library
+add_library(LEPTON_SDK STATIC IMPORTED)
+set_target_properties(LEPTON_SDK PROPERTIES
+    IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/raspberrypi_libs/leptonSDKEmb32PUB/Debug/libLEPTON_SDK.a
+)
+
+# Link the libraries
+target_link_libraries(raspberrypi_video_network LEPTON_SDK)
 
 # Set the output directories
-set_target_properties(raspberrypi_video PROPERTIES
+set_target_properties(raspberrypi_video_network PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/.
     OBJECT_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/gen_objs
 )
