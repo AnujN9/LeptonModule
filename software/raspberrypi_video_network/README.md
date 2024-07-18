@@ -5,6 +5,13 @@ First enable the SPI and I2C interfaces on the Pi.
 sudo raspi-config
 ```
 
+Install cmake:
+```
+sudo apt install cmake -y
+```
+
+Clone the repo.
+
 To build, cd to the *LeptonModule/sofware* folder, then run:
 ```
 mkdir build
@@ -13,21 +20,23 @@ cmake ..
 make
 ```
 
+----
+
 ### Lepton 3.x
+
+Before running ensure the RPi is running on performance mode. Modify the */etc/rc.local*, add the command at the end and reboot:
+
+```
+sudo sh -c "echo performance > /sys/devices/system/cpu/cpufreq/policy0/scaling_governor"
+```
 
 To run the program while still in the build directory, using a FLIR Lepton 3.x camera core use the following code:
 ```
 ./raspberrypi_video_network
 ```
-
+It has command arguments to set the IP address
 ----
 
-In order for the application to run properly, a Lepton camera must be attached in a specific way to the SPI, power, and ground pins of the Raspi's GPIO interface, as well as the I2C SDA/SCL pins:
+In order for the application to run properly, a Lepton camera must be attached through the camera breakout board V2.0 in a specific way to the SPI, power, and ground pins of the Raspi's GPIO interface, as well as the I2C SDA/SCL pins:
 
-Lepton's GND pin should be connected to RasPi's ground.
-Lepton's CS pin should be connected to RasPi's CE1 pin.
-Lepton's MISO pin should be connected to RasPI's MISO pin.
-Lepton's CLK pin should be connected to RasPI's SCLK pin.
-Lepton's VIN pin should be connected to RasPI's 3v3 pin.
-Lepton's SDA pin should be connected to RasPI's SDA pin.
-Lepton's SCL pin should be connected to RasPI's SCL pin.
+Please follow the ```Getting started with the Raspberry Pi and Breakout Board V2.0.pdf``` document in the *LeptonModule/docs* folder
