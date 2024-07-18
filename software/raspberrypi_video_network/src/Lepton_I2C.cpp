@@ -5,8 +5,10 @@
 #include "LEPTON_OEM.h"
 #include "LEPTON_Types.h"
 
+/// \brief private variable, descriptor for connection to Lepton I2C port.
 bool _connected;
 
+/// \brief private variable, descriptor for Lepton I2C port struct.
 LEP_CAMERA_PORT_DESC_T _port;
 
 int lepton_connect() {

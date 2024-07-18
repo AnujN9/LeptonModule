@@ -10,6 +10,9 @@
 #include "SPI.h"
 #include "Lepton_I2C.h"
 
+/// \file main.cpp
+/// \brief Main loop that sends raw data through ethernet using UDP protocol.
+
 #define PACKET_SIZE 164
 #define PACKET_SIZE_UINT16 (PACKET_SIZE/2)
 #define PACKETS_PER_FRAME 60
@@ -17,12 +20,25 @@
 #define FPS 27;
 #define PORT 8080
 
+/// \brief Function to describe how to use the command line arguments
+/// \param cmd Argument of the command line, here it is the program
+void printUsage(char *cmd) {
+        char *cmdname = basename(cmd);
+	printf("Usage: %s [OPTION]...\n"
+               " -h      display this help and exit\n"
+               " -net x  set the ip address (default: 10.42.0.1)\n"
+               "", cmdname);
+	return;
+}
+
+/// \brief Main function that captures raw data from the Lepton and transmits it using UDP.
+/// \param argc Number of command-line arguments.
+/// \param argv Array of command-line arguments.
+/// \return 0 if successful, -1 if failure.
 int main( int argc, char **argv )
 {
 	int typeLepton = 3; // Lepton 3.x
 	unsigned int spiSpeed = 20 * 1000 * 1000; // SPI bus speed 20MHz
-	uint16_t rangeMin = 30000;
-	uint16_t rangeMax = 32000;
 	int myImageWidth = 160;
 	int myImageHeight = 120;
 
@@ -35,9 +51,27 @@ int main( int argc, char **argv )
 
 	int sockfd;
     struct sockaddr_in servaddr;
+	const char *netIP = "10.42.0.1";
 
+	for(int i=1; i < argc; i++) {
+		if (strcmp(argv[i], "-h") == 0) {
+			printUsage(argv[0]);
+			exit(0);
+		}
+		else if (strcmp(argv[i], "-net") == 0) {
+			if (i + 1 != argc){
+				netIP = argv[++i];
+			}
+			else {
+				std::cerr << "Error: Enter an IP." << std::endl;
+				exit(1);
+			}
+		}
+	}
+	std::cout << "Network is " << netIP << std::endl;
 	SpiOpenPort(0, spiSpeed);
 
+	// Setting up UDP socket
 	if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         std::cerr << "Socket creation failed" << std::endl;
         return -1;
@@ -48,7 +82,7 @@ int main( int argc, char **argv )
     // Set up server address
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(PORT);
-    servaddr.sin_addr.s_addr = inet_addr("10.42.0.1"); // Set your laptop or PC IP address here
+    servaddr.sin_addr.s_addr = inet_addr(netIP);
 
 	while(true) {
 
@@ -114,4 +148,3 @@ int main( int argc, char **argv )
 	//finally, close SPI port just bcuz
 	SpiClosePort(0);
 }
-
