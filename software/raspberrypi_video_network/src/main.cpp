@@ -26,9 +26,9 @@ void printUsage(char *cmd)
 {
 	char *cmdname = basename(cmd);
 	printf("Usage: %s [OPTION]...\n"
-               " -h      display this help and exit\n"
-               " -net x  set the ip address (default: 10.42.0.1)\n"
-               "", cmdname);
+		   " -h      display this help and exit\n"
+		   " -net x  set the ip address (default: 10.42.0.1)\n"
+		   "", cmdname);
 	return;
 }
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 	uint16_t n_zero_value_drop_frame = 0;
 
 	int sockfd;
-    struct sockaddr_in servaddr;
+	struct sockaddr_in servaddr;
 	const char *netIP = "10.42.0.1";
 
 	for(int i=1; i < argc; i++)
@@ -78,16 +78,16 @@ int main(int argc, char **argv)
 	// Setting up UDP socket
 	if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
 	{
-        std::cerr << "Socket creation failed" << std::endl;
-        return -1;
-    }
-    
-    memset(&servaddr, 0, sizeof(servaddr));
-    
-    // Set up server address
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(PORT);
-    servaddr.sin_addr.s_addr = inet_addr(netIP);
+		std::cerr << "Socket creation failed" << std::endl;
+		return -1;
+	}
+
+	memset(&servaddr, 0, sizeof(servaddr));
+
+	// Set up server address
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port = htons(PORT);
+	servaddr.sin_addr.s_addr = inet_addr(netIP);
 
 	while(true)
 	{
@@ -147,14 +147,14 @@ int main(int argc, char **argv)
 
 		for (int i = 0; i < 4; ++i)
 		{
-            ssize_t sent_bytes = sendto(sockfd, shelf[i], sizeof(shelf[i]), 0, (const struct sockaddr *)&servaddr, sizeof(servaddr));
-            if (sent_bytes < 0)
+			ssize_t sent_bytes = sendto(sockfd, shelf[i], sizeof(shelf[i]), 0, (const struct sockaddr *)&servaddr, sizeof(servaddr));
+			if (sent_bytes < 0)
 			{
-                std::cerr << "Send failed" << std::endl;
-                close(sockfd);
-                return -1;
-            }
-        }
+				std::cerr << "Send failed" << std::endl;
+				close(sockfd);
+				return -1;
+			}
+		}
 		usleep(10000);
 	}
 	// Close the socket
