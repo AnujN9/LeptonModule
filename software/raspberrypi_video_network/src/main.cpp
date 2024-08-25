@@ -18,7 +18,6 @@
 #define PACKETS_PER_FRAME 60
 #define FRAME_SIZE_UINT16 (PACKET_SIZE_UINT16*PACKETS_PER_FRAME)
 #define FPS 27;
-#define PORT 8080
 
 /// \brief Function to describe how to use the command line arguments
 /// \param cmd Argument of the command line, here it is the program
@@ -26,8 +25,9 @@ void printUsage(char *cmd)
 {
 	char *cmdname = basename(cmd);
 	printf("Usage: %s [OPTION]...\n"
-		   " -h      display this help and exit\n"
-		   " -net x  set the ip address (default: 10.42.0.1)\n"
+		   " -h			display this help and exit\n"
+		   " -net x		set the ip address (default: 10.42.0.1)\n"
+		   " -port x	set the ip port (default: 8080)\n"
 		   "", cmdname);
 	return;
 }
@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 	int sockfd;
 	struct sockaddr_in servaddr;
 	const char *netIP = "10.42.0.1";
+	const char *port = "8080";
 
 	for(int i=1; i < argc; i++)
 	{
@@ -71,8 +72,19 @@ int main(int argc, char **argv)
 				exit(1);
 			}
 		}
+		else if (strcmp(argv[i], "-port") == 0)
+		{
+			if (i + 1 != argc)
+			{
+				port = argv[++i];
+			} else {
+				std::cerr << "Error: Enter an IP." << std::endl;
+				exit(1);
+			}
+		}
 	}
-	std::cout << "Network is " << netIP << std::endl;
+	std::cout << "Network address is " << netIP << std::endl;
+	std::cout << "Network port is " << port << std::endl;
 	SpiOpenPort(0, spiSpeed);
 
 	// Setting up UDP socket
