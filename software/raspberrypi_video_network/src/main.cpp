@@ -35,6 +35,8 @@ void printUsage(char *cmd)
 /// \brief Main function that captures raw data from the Lepton and transmits it using UDP.
 /// \param argc Number of command-line arguments.
 /// \param argv Array of command-line arguments.
+/// \param net IP address to send the UDP messages.
+/// \param port Port of the IP address.
 /// \return 0 if successful, -1 if failure.
 int main(int argc, char **argv)
 {
