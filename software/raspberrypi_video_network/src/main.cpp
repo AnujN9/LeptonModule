@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
 	int sockfd;
 	struct sockaddr_in servaddr;
-	char *netIP = "10.42.0.1";
+	const char *netIP = "10.42.0.1";
 	uint16_t *port = "8080";
 
 	for(int i=1; i < argc; i++)
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 			{
 				netIP = argv[++i];
 			} else {
-				std::cerr << "Error: Enter an IP." << std::endl;
+				std::cerr << "Error: Enter a valid IP." << std::endl;
 				exit(1);
 			}
 		}
@@ -76,9 +76,13 @@ int main(int argc, char **argv)
 		{
 			if (i + 1 != argc)
 			{
+				long int temp = std::strtol(argv[++i], nullptr, 10);
+				if (temp < 0 || temp > 65535){
+					std::cerr << "Error: Enter a valid Port." << std::endl;
+				}
 				port = argv[++i];
 			} else {
-				std::cerr << "Error: Enter an IP." << std::endl;
+				std::cerr << "Error: Enter a valid Port." << std::endl;
 				exit(1);
 			}
 		}
@@ -98,7 +102,7 @@ int main(int argc, char **argv)
 
 	// Set up server address
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(port);
+	servaddr.sin_port = htons(PORT);
 	servaddr.sin_addr.s_addr = inet_addr(netIP);
 
 	while(true)
@@ -109,8 +113,8 @@ int main(int argc, char **argv)
 		for(int j=0;j<PACKETS_PER_FRAME;j++)
 		{
 			//if it's a drop packet, reset j to 0, set to -1 so he'll be at 0 again loop
-			read(spi_cs0_fd, result+sizeof(uint8_t)*PACKET_SIZE*j, sizeof(uint8_t)*PACKET_SIZE);
-			int packetNumber = result[j*PACKET_SIZE+1];
+			read(spi_cs0_fd, result+sizeof(uint8_t) * PACKET_SIZE * j, sizeof(uint8_t) * PACKET_SIZE);
+			int packetNumber = result[j * PACKET_SIZE+1];
 			if(packetNumber != j)
 			{
 				j = -1;
@@ -131,7 +135,7 @@ int main(int argc, char **argv)
 			}
 			if (packetNumber == 20)
 			{
-				segmentNumber = (result[j*PACKET_SIZE] >> 4) & 0x0f;
+				segmentNumber = (result[j * PACKET_SIZE] >> 4) & 0x0f;
 				if ((segmentNumber < 1) || (4 < segmentNumber))
 				{
 					break;
@@ -150,7 +154,7 @@ int main(int argc, char **argv)
 		{
 			n_wrong_segment = 0;
 		}
-		memcpy(shelf[segmentNumber - 1], result, sizeof(uint8_t) * PACKET_SIZE*PACKETS_PER_FRAME);
+		memcpy(shelf[segmentNumber - 1], result, sizeof(uint8_t) * PACKET_SIZE * PACKETS_PER_FRAME);
 		if (segmentNumber != 4)
 		{
 			continue;
