@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	int sockfd;
 	struct sockaddr_in servaddr;
 	const char *netIP = "10.42.0.1";
-	uint16_t *port = "8080";
+	uint16_t *port = 8080;
 
 	for(int i=1; i < argc; i++)
 	{
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 				if (temp < 0 || temp > 65535){
 					std::cerr << "Error: Enter a valid Port." << std::endl;
 				}
-				port = argv[++i];
+				port = static_cast<uint16_t>(temp);
 			} else {
 				std::cerr << "Error: Enter a valid Port." << std::endl;
 				exit(1);
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 
 	// Set up server address
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_port = htons(PORT);
+	servaddr.sin_port = htons(port);
 	servaddr.sin_addr.s_addr = inet_addr(netIP);
 
 	while(true)
