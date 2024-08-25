@@ -52,8 +52,8 @@ int main(int argc, char **argv)
 
 	int sockfd;
 	struct sockaddr_in servaddr;
-	const char *netIP = "10.42.0.1";
-	const char *port = "8080";
+	char *netIP = "10.42.0.1";
+	uint16_t *port = "8080";
 
 	for(int i=1; i < argc; i++)
 	{
