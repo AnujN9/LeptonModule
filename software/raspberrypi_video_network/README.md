@@ -1,4 +1,4 @@
-This example is meant for Raspberry Pi4 and Lepton 3.1R.
+This example is meant for Raspberry Pi 4 and Lepton 3.1R.
 
 ## Installation
 

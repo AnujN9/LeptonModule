@@ -5,6 +5,10 @@ The FLIR Lepton™ is the most compact longwave infrared (LWIR) sensor available
 More Information
 https://groupgets.com/manufacturers/flir/products/lepton-3-5
 
+raspberrypi_video_network
+--------------
+This is for a Raspberry Pi to pipe the data across a network via UDP.
+https://github.com/AnujN9/LeptonModule/tree/master/software/raspberrypi_video_network
 
 beagleboneblack_video
 --------------
