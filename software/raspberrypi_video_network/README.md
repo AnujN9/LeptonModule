@@ -39,4 +39,4 @@ It has command arguments to set the IP address
 
 In order for the application to run properly, a Lepton camera must be attached through the camera breakout board V2.0 in a specific way to the SPI, power, and ground pins of the Raspi's GPIO interface, as well as the I2C SDA/SCL pins:
 
-Please follow the ```Getting started with the Raspberry Pi and Breakout Board V2.0.pdf``` document in the *LeptonModule/docs* folder
+Please follow the [Getting started with the Raspberry Pi and Breakout Board V2.0.pdf](https://github.com/AnujN9/LeptonModule/tree/master/docs) document in the `LeptonModule/docs` folder
